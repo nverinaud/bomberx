@@ -4,7 +4,8 @@
 enum TypeDeCase {
     DESTRUCTIBLE,
     INDESTRUCTIBLE,
-    VIDE
+    VIDE,
+    DECOR
 };
 
 enum Movement{
@@ -12,6 +13,12 @@ enum Movement{
     RIGHT,
     BOTTOM,
     LEFT
+};
+
+class Debug{
+public:
+    static bool isOn(){ return true; };
+
 };
 
 #endif // BASE_H

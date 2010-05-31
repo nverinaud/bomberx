@@ -6,7 +6,9 @@
 class Bombe : public Position
 {
 public:
-    Bombe();
+    Bombe(int, int, int);
+
+    int getBomberId();
 
     void decrementeShouldExploseIn();
 
@@ -14,6 +16,7 @@ public:
 
 private:
     int shouldExploseIn;
+    int bomberId;
 };
 
 #endif // BOMBE_H

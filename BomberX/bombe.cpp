@@ -1,8 +1,11 @@
 #include "bombe.h"
 
-Bombe::Bombe()
+Bombe::Bombe(int _bomberId, int offsetX, int offsetY)
 {
+    bomberId = _bomberId;
     shouldExploseIn = 3;
+    setX(offsetX);
+    setY(offsetY);
 }
 
 void Bombe::decrementeShouldExploseIn()
@@ -17,4 +20,9 @@ bool Bombe::bombeShouldExplose()
         return true;
     else
         return false;
+}
+
+int Bombe::getBomberId()
+{
+    return bomberId;
 }
