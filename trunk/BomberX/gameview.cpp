@@ -3,12 +3,14 @@
 
 #include <iostream>
 
-#define _IMG_CASE_DESTRUCTIBLE_ "/img/case_destructible.jpg"
+#define _IMG_CASE_DESTRUCTIBLE_ "/img/case_destructible.png"
 #define _IMG_CASE_VIDE_ "/img/case_vide.jpg"
-#define _IMG_CASE_INDESTRUCTIBLE_ "/img/case_pleine.jpg"
+#define _IMG_CASE_INDESTRUCTIBLE_ "/img/case_indestructible.png"
 #define _IMG_BOMBER_ "/img/bomber.png"
-#define _IMG_BOMBE_ "/img/bombe.png"
-#define SPEED 27
+#define _IMG_BOMBE_ "/img/bombe2.png"
+#define _TERRAIN_ "/img/Terrain2.png"
+#define _IMG_VIDE_ "/img/Vide.png"
+#define SPEED 50
 
 /*
  * Constructeur
@@ -28,8 +30,8 @@ void GameView::generateGameAreaView()
 {
     // Génération de l'affichage de la map
     QPixmap caseIndestructible(_IMG_CASE_INDESTRUCTIBLE_);
-    QPixmap caseVide(_IMG_CASE_VIDE_);
     QPixmap caseDestructible(_IMG_CASE_DESTRUCTIBLE_);
+    QPixmap caseDecor(_IMG_VIDE_);
 
     for(int i = 0 ; i < 15 ; i++){
         for(int j = 0 ; j < 15 ; j++){
@@ -42,24 +44,33 @@ void GameView::generateGameAreaView()
                 scene->addPixmap(caseDestructible)->setOffset(j*caseIndestructible.width(), i*caseIndestructible.height());
                 break;
 
+            case DECOR:
+                scene->addPixmap(caseDecor)->setOffset(j*caseIndestructible.width(), i*caseIndestructible.height());
+                break;
+
             default:
-                scene->addPixmap(caseVide)->setOffset(j*caseIndestructible.width(), i*caseIndestructible.height());
+                // scene->addPixmap(caseVide)->setOffset(j*caseIndestructible.width(), i*caseIndestructible.height());
+                break;
             }
         }
     }
+
+    QPixmap terrain(_TERRAIN_);
+    QBrush myBrush(terrain);
+    scene->setBackgroundBrush(myBrush);
 
     // Génération de l'affichage des personnages
     QPixmap bomber(_IMG_BOMBER_);
 
     bomber1 = new QGraphicsPixmapItem(bomber, NULL, scene);
-    bomber1->setOffset(35, 25);
+    bomber1->setOffset(60, 50);
 
     //bomber2 = new QGraphicsPixmapItem(bomber, NULL, scene);
 
     //bomber3 = new QGraphicsPixmapItem(bomber, NULL, scene);
 
     bomber4 = new QGraphicsPixmapItem(bomber, NULL, scene);
-    bomber4->setOffset(390, 350);
+    bomber4->setOffset(scene->width()-45*2, scene->height()-50*2);
 
     // Appel à la méthode d'affichage générale
     this->displayGameView();
@@ -76,7 +87,7 @@ void GameView::displayGameView()
     vlayout->addWidget(quitButton);
 
     view = new QGraphicsView(scene, this);
-    view->setFixedSize(640, 480);
+    view->setFixedSize(scene->width()+10, scene->height()+10);
 
     QHBoxLayout *hLayout = new QHBoxLayout();
     hLayout->addLayout(vlayout);
@@ -102,72 +113,76 @@ void GameView::actionPlay()
  */
 void GameView::keyPressEvent(QKeyEvent* e)
 {
+    if(Debug::isOn())
+        std::cout << "Offset X: " << bomber1->offset().x() << " Offset Y: " << bomber1->offset().y() << std::endl;
+
     switch(e->key()){
         /*GESTION DU PLAYER 1*/
 
     case Qt::Key_Z:
             if (gameController->bomberWantMoveToPosition(1, TOP))
                bomber1->setOffset(bomber1->offset().x(), bomber1->offset().y()-SPEED);
-    break;
+        break;
 
     case Qt::Key_S:
             if (gameController->bomberWantMoveToPosition(1, BOTTOM))
                 bomber1->setOffset(bomber1->offset().x(), bomber1->offset().y()+SPEED);
-    break;
+        break;
 
     case Qt::Key_D:
             if (gameController->bomberWantMoveToPosition(1, RIGHT))
                 bomber1->setOffset(bomber1->offset().x()+SPEED, bomber1->offset().y());
-    break;
+        break;
 
     case Qt::Key_Q:
             if (gameController->bomberWantMoveToPosition(1, LEFT))
                 bomber1->setOffset(bomber1->offset().x()-SPEED, bomber1->offset().y());
-    break;
+        break;
 
     case Qt::Key_A:
-            if(gameController->canPlantBombe(1)) {
+            if(gameController->canPlantBombe(1, bomber1->offset().x(), bomber1->offset().y()-10)) {
                 QPixmap imgBombe(_IMG_BOMBE_);
                 QGraphicsPixmapItem *bombe = new QGraphicsPixmapItem(imgBombe, NULL, scene);
-                bombe->setOffset(bomber1->offset().x(), bomber1->offset().y());
+                bombe->setOffset(bomber1->offset().x(), bomber1->offset().y()-10);
             }
-    break;
+        break;
 
    /*GESTION DU PLAYER 4*/
 
     case Qt::Key_Up:
             if (gameController->bomberWantMoveToPosition(4, TOP))
                  bomber4->setOffset(bomber4->offset().x(), bomber4->offset().y()-SPEED);
-    break;
+        break;
 
     case Qt::Key_Down:
             if (gameController->bomberWantMoveToPosition(4, BOTTOM))
                  bomber4->setOffset(bomber4->offset().x(), bomber4->offset().y()+SPEED);
-    break;
+        break;
 
     case Qt::Key_Right:
             if (gameController->bomberWantMoveToPosition(4, RIGHT))
            bomber4->setOffset(bomber4->offset().x()+SPEED, bomber4->offset().y());
-    break;
+        break;
 
     case Qt::Key_Left:
             if (gameController->bomberWantMoveToPosition(4, LEFT))
               bomber4->setOffset(bomber4->offset().x()-SPEED, bomber4->offset().y());
-    break;
+        break;
 
     case Qt::Key_Shift:
-            if(gameController->canPlantBombe(4)) {
+            if(gameController->canPlantBombe(4, bomber4->offset().x(), bomber4->offset().y()-10)) {
                 QPixmap imgBombe(_IMG_BOMBE_);
                 QGraphicsPixmapItem *bombe = new QGraphicsPixmapItem(imgBombe, NULL, scene);
-                bombe->setOffset(bomber4->offset().x(), bomber4->offset().y());
+                bombe->setOffset(bomber4->offset().x(), bomber4->offset().y()-10);
             }
-    break;
-
-    case Qt::Key_Space:
-            std::cout << "Check braw !" << std::endl;
-    break;
+        break;
 
     default:
-    break;
+        break;
     }
+}
+
+void GameView::removeBombeAtOffset(int _x, int _y)
+{
+    scene->removeItem(scene->itemAt(_x+20, _y+20));
 }

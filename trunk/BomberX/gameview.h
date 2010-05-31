@@ -21,6 +21,7 @@ public:
 
     void generateGameAreaView();
     void displayGameView();
+    void removeBombeAtOffset(int, int);
 
     QGraphicsPixmapItem* bomber1, *bomber2, *bomber3, *bomber4;
     GameController* gameController;

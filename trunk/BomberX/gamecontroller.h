@@ -31,8 +31,8 @@ public:
     void generateGameArea();
     bool bomberWantMoveToPosition(int, Movement);
     bool isCaseEmptyAtPosition(int, int);
-    bool canPlantBombe(int);
-    void plantNewBombe();
+    bool canPlantBombe(int, int, int);
+    void plantNewBombe(int, int, int);
 
 public slots:
     void someBombesShouldMaybeExplose();
