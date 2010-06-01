@@ -152,9 +152,15 @@ void GameController::someBombesShouldMaybeExplose()
 
             gameView->removeBombeAtOffset(bombe->getOffsetX(), bombe->getOffsetY());
             this->gameArea[bombe->getY()].replace(bombe->getX(), new Case(VIDE));
+            this->bombeExplosed(bombe);
             this->bombes.remove(i);
         }
     }
+}
+
+void GameController::bombeExplosed(Bombe* bombe)
+{
+
 }
 
 // Tests compteurBombe

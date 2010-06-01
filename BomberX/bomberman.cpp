@@ -21,6 +21,33 @@ Bomberman::~Bomberman()
 }
 
 /*
+ * Compteur de bombe
+ */
+
+void Bomberman::decrementeCompteurBombe(){
+    if(compteurBombe != 0)
+        compteurBombe--;
+}
+
+void Bomberman::incrementeCompteurBombe(){
+        compteurBombe++;
+}
+
+/*
+ * Bonus
+ */
+
+int getBomberPower()
+{
+
+}
+
+void incrementeBomberPower()
+{
+
+}
+
+/*
  * Getters & Setters
  */
 QString Bomberman::getColor()
@@ -38,13 +65,3 @@ void Bomberman::setCompteurBombe(int _compteurBombe)
     if (_compteurBombe >= 0)
         compteurBombe = _compteurBombe;
 }
-
-void Bomberman::decrementeCompteurBombe(){
-    if(compteurBombe != 0)
-        compteurBombe--;
-}
-
-void Bomberman::incrementeCompteurBombe(){
-        compteurBombe++;
-}
-
