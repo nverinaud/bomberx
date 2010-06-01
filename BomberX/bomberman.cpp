@@ -13,6 +13,7 @@ Bomberman::Bomberman(int _x, int _y)
     setX(_x);
     setY(_y);
     setCompteurBombe(1);
+    bomberPower = 2;
 }
 
 Bomberman::~Bomberman()
@@ -37,14 +38,14 @@ void Bomberman::incrementeCompteurBombe(){
  * Bonus
  */
 
-int getBomberPower()
+int Bomberman::getBomberPower()
 {
-
+    return bomberPower;
 }
 
-void incrementeBomberPower()
+void Bomberman::incrementeBomberPower()
 {
-
+    bomberPower++;
 }
 
 /*

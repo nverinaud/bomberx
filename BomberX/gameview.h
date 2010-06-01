@@ -11,6 +11,8 @@
 #include <QLayout>
 #include <QKeyEvent>
 
+#include "base.h"
+
 class GameController;
 
 class GameView : public QWidget
@@ -22,6 +24,7 @@ public:
     void generateGameAreaView();
     void displayGameView();
     void removeBombeAtOffset(int, int);
+    void removeCaseAtOffset(int, int, TypeDeCase);
 
     QGraphicsPixmapItem* bomber1, *bomber2, *bomber3, *bomber4;
     GameController* gameController;

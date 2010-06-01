@@ -8,7 +8,6 @@ Bombe::Bombe(int _bomberId, int _offsetX, int _offsetY)
     offsetY = _offsetY;
     setX(_offsetX/50);
     setY((_offsetY+20)/50);
-    power = 1;
 }
 
 void Bombe::decrementeShouldExploseIn()
@@ -38,9 +37,4 @@ int Bombe::getOffsetX()
 int Bombe::getOffsetY()
 {
     return offsetY;
-}
-
-int Bombe::getPower()
-{
-    return power;
 }
