@@ -9,6 +9,9 @@ public:
     Bombe(int, int, int);
 
     int getBomberId();
+    int getOffsetX();
+    int getOffsetY();
+    int getPower();
 
     void decrementeShouldExploseIn();
 
@@ -16,7 +19,10 @@ public:
 
 private:
     int shouldExploseIn;
+    int offsetX;
+    int offsetY;
     int bomberId;
+    int power;
 };
 
 #endif // BOMBE_H

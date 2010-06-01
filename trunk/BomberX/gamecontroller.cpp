@@ -8,7 +8,7 @@ GameController::GameController(QWidget *parent) :
     // Création d'une boucle évènementielle pour la gestion des bombes
     QTimer *bombesTimer = new QTimer(this);
     connect(bombesTimer, SIGNAL(timeout()), this, SLOT(someBombesShouldMaybeExplose()));
-    bombesTimer->start(1000);
+    bombesTimer->start(100);
 
     // Génération du tableau logique de cases
     this->generateGameArea();
@@ -103,7 +103,7 @@ bool GameController::bomberWantMoveToPosition(int _bomber, Movement mov)
 
     // Debug
     if(Debug::isOn())
-        std::cout << "Position X: " << bomber->getX() << " Position Y: " << bomber->getY() << std::endl;
+        std::cout << "Bomberman - Position X: " << bomber->getX() << " Position Y: " << bomber->getY() << std::endl;
 
     return bomberCanMove;
 }
@@ -126,9 +126,6 @@ void GameController::someBombesShouldMaybeExplose()
         bombe->decrementeShouldExploseIn();
 
         if(bombe->bombeShouldExplose()){
-            if(Debug::isOn())
-                std::cout << "BOOM!" << std::endl;
-
             switch(bombe->getBomberId()){
             case 1:
                 player1->incrementeCompteurBombe();
@@ -151,9 +148,10 @@ void GameController::someBombesShouldMaybeExplose()
             }
 
             if(Debug::isOn())
-                std::cout << "Offset X: " << bombe->getX() << " Offset Y: " << bombe->getY() << std::endl;
+                std::cout << "Offset X: " << bombe->getOffsetX() << " Offset Y: " << bombe->getOffsetY() << std::endl;
 
-            gameView->removeBombeAtOffset(bombe->getX(), bombe->getY());
+            gameView->removeBombeAtOffset(bombe->getOffsetX(), bombe->getOffsetY());
+            this->gameArea[bombe->getY()].replace(bombe->getX(), new Case(VIDE));
             this->bombes.remove(i);
         }
     }
@@ -209,5 +207,9 @@ bool GameController::canPlantBombe(int _bomber, int offsetX, int offsetY)
 
 void GameController::plantNewBombe(int bomberId, int offsetX, int offsetY)
 {
-    this->bombes.append(new Bombe(bomberId, offsetX, offsetY));
+    Bombe *bombe = new Bombe(bomberId, offsetX, offsetY);
+    this->bombes.append(bombe);
+    this->gameArea[bombe->getY()].replace(bombe->getX(), new Case(DESTRUCTIBLE));
+    if(Debug::isOn())
+        std::cout << "Bombe - Position X: " << bombe->getX() << " Position Y: " << bombe->getY() << std::endl;
 }

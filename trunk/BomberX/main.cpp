@@ -8,7 +8,5 @@ int main(int argc, char *argv[])
 
     new GameController();
 
-    // Test
-
     return a.exec();
 }
