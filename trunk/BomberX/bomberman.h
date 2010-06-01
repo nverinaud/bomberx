@@ -12,8 +12,13 @@ public:
     Bomberman(int, int);
     ~Bomberman();
 
+    // Compteur de bombe
     void decrementeCompteurBombe();
     void incrementeCompteurBombe();
+
+    // Bonus
+    int getBomberPower();
+    void incrementeBomberPower();
 
     // Getters & Setters
     QString getColor();
@@ -25,6 +30,7 @@ public slots:
 private:
     QString color;
     int compteurBombe;
+    int bomberPower;
 
 };
 
