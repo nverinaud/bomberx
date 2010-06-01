@@ -5,7 +5,8 @@ enum TypeDeCase {
     DESTRUCTIBLE,
     INDESTRUCTIBLE,
     VIDE,
-    DECOR
+    DECOR,
+    BOMBER
 };
 
 enum Movement{

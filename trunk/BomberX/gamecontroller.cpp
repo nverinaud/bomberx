@@ -79,31 +79,46 @@ bool GameController::bomberWantMoveToPosition(int _bomber, Movement mov)
     switch (mov){
     case TOP:
         bomberCanMove = this->isCaseEmptyAtPosition(bomber->getY()-1, bomber->getX());
-        if (bomberCanMove)
+        if (bomberCanMove){
+            this->gameArea[bomber->getY()].replace(bomber->getX(), new Case(VIDE));
             bomber->setY(bomber->getY()-1);
+        }
         break;
+
     case RIGHT:
         bomberCanMove = this->isCaseEmptyAtPosition(bomber->getY(), bomber->getX()+1);
-        if (bomberCanMove)
+        if (bomberCanMove){
+            this->gameArea[bomber->getY()].replace(bomber->getX(), new Case(VIDE));
             bomber->setX(bomber->getX()+1);
+        }
         break;
+
     case BOTTOM:
         bomberCanMove = this->isCaseEmptyAtPosition(bomber->getY()+1, bomber->getX());
-        if (bomberCanMove)
+        if (bomberCanMove){
+            this->gameArea[bomber->getY()].replace(bomber->getX(), new Case(VIDE));
             bomber->setY(bomber->getY()+1);
+        }
         break;
+
     case LEFT:
         bomberCanMove = this->isCaseEmptyAtPosition(bomber->getY(), bomber->getX()-1);
-        if (bomberCanMove)
+        if (bomberCanMove){
+            this->gameArea[bomber->getY()].replace(bomber->getX(), new Case(VIDE));
             bomber->setX(bomber->getX()-1);
+        }
         break;
+
     default:
         break;
     }
 
     // Debug
     if(Debug::isOn())
-        std::cout << "Bomberman - Position X: " << bomber->getX() << " Position Y: " << bomber->getY() << std::endl;
+        std::cout << "Bomberman - Position Y: " << bomber->getY() << " Position X: " << bomber->getX() << std::endl;
+
+    // Mise à jour du tableau de case (un bomberman peut-être représenté par une case desctructible
+    this->gameArea[bomber->getY()].replace(bomber->getX(), new Case(BOMBER));
 
     return bomberCanMove;
 }
@@ -148,7 +163,7 @@ void GameController::someBombesShouldMaybeExplose()
             }
 
             if(Debug::isOn())
-                std::cout << "Offset X: " << bombe->getOffsetX() << " Offset Y: " << bombe->getOffsetY() << std::endl;
+                std::cout << "Offset Y: " << bombe->getOffsetY() << " Offset X: " << bombe->getOffsetX() << std::endl;
 
             gameView->removeBombeAtOffset(bombe->getOffsetX(), bombe->getOffsetY());
             this->gameArea[bombe->getY()].replace(bombe->getX(), new Case(VIDE));
@@ -160,7 +175,72 @@ void GameController::someBombesShouldMaybeExplose()
 
 void GameController::bombeExplosed(Bombe* bombe)
 {
+    int power = 0;
 
+    switch(bombe->getBomberId()){
+    case 1:
+        power = player1->getBomberPower();
+        break;
+
+    case 2:
+        power = player2->getBomberPower();
+        break;
+
+    case 3:
+        power = player2->getBomberPower();
+        break;
+
+    case 4:
+        power = player2->getBomberPower();
+        break;
+
+    default:
+        break;
+    }
+
+    // Coordonnées logiques de la bombe au moment de l'explosion
+    int x = bombe->getX(); // colonne
+    int y = bombe->getY(); // ligne
+    bool stopLeft = false;
+    bool stopTop = false;
+    bool stopRight = false;
+    bool stopBot = false;
+
+    std::cout << "Bombe X: " << x << " Y: " << y << std::endl;
+
+    for(int i = -power ; i <= power ; i++){ // i = ligne
+        if(y+i < 1 || y+i > 13 || (i <= 0 && stopTop) || (i > 0 && stopBot))
+            continue;
+
+        if(i+y == y){ // Si i == ligne initiale de l'explosion
+            for(int j = -power ; j <= power ; j++){ // j = colonne
+                if(x+j < 1 || x+j > 13 || (j <= 0 && stopLeft) || (j > 0 && stopRight))
+                    continue;
+
+                if( this->gameArea.at(y).at(x+j)->getTypeDeCase() == VIDE || this->gameArea.at(y).at(x+j)->getTypeDeCase() == DESTRUCTIBLE ){
+                    this->gameView->removeCaseAtOffset(x+j, y, this->gameArea.at(y).at(x+j)->getTypeDeCase());
+                    this->gameArea[y].replace(x+j, new Case(VIDE));
+
+                    if(this->gameArea.at(y).at(x+j)->getTypeDeCase() == DESTRUCTIBLE){
+                        if(j <= 0)
+                            stopLeft = true;
+                        else
+                            stopRight = true;
+                    }
+                } else if(this->gameArea.at(y).at(x+j)->getTypeDeCase() == INDESTRUCTIBLE){
+                    if(j <= 0)
+                        stopLeft = true;
+                    else
+                        stopRight = true;
+                }
+            }
+        } else {
+            if( this->gameArea.at(y+i).at(x)->getTypeDeCase() == VIDE || this->gameArea.at(y+i).at(x)->getTypeDeCase() == DESTRUCTIBLE ){
+                this->gameView->removeCaseAtOffset(x, y+i, this->gameArea.at(y+i).at(x)->getTypeDeCase());
+                this->gameArea[y+i].replace(x, new Case(VIDE));
+            }
+        }
+    }
 }
 
 // Tests compteurBombe
@@ -217,5 +297,5 @@ void GameController::plantNewBombe(int bomberId, int offsetX, int offsetY)
     this->bombes.append(bombe);
     this->gameArea[bombe->getY()].replace(bombe->getX(), new Case(DESTRUCTIBLE));
     if(Debug::isOn())
-        std::cout << "Bombe - Position X: " << bombe->getX() << " Position Y: " << bombe->getY() << std::endl;
+        std::cout << "Bombe - Position Y: " << bombe->getY() << " Position X: " << bombe->getX() << std::endl;
 }

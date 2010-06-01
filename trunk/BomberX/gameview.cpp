@@ -40,7 +40,7 @@ void GameView::generateGameAreaView()
                 break;
 
             default:
-                // scene->addPixmap(caseVide)->setOffset(j*caseIndestructible.width(), i*caseIndestructible.height());
+
                 break;
             }
         }
@@ -176,4 +176,11 @@ void GameView::keyPressEvent(QKeyEvent* e)
 void GameView::removeBombeAtOffset(int _x, int _y)
 {
     scene->removeItem(scene->itemAt(_x+20, _y+20));
+}
+
+void GameView::removeCaseAtOffset(int _x, int _y, TypeDeCase caseType)
+{
+    std::cout << "X=" << _x*50+10 << " Y=" << _y*50+10 << std::endl;
+    if(caseType != VIDE)
+        scene->removeItem(scene->itemAt(_x*50+20, _y*50+20));
 }

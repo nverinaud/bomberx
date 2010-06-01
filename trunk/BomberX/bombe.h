@@ -11,7 +11,6 @@ public:
     int getBomberId();
     int getOffsetX();
     int getOffsetY();
-    int getPower();
 
     void decrementeShouldExploseIn();
 
@@ -22,7 +21,6 @@ private:
     int offsetX;
     int offsetY;
     int bomberId;
-    int power;
 };
 
 #endif // BOMBE_H
