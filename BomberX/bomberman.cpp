@@ -51,10 +51,7 @@ void Bomberman::incrementeBomberPower()
 /*
  * Getters & Setters
  */
-QString Bomberman::getColor()
-{
-    return color;
-}
+
 
 int Bomberman::getCompteurBombe()
 {

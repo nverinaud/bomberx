@@ -1,3 +1,11 @@
+/*******************************************************************/
+/* Projet :     Bomberman                                          */
+/* Numéro de version :                                             */
+/* Date :                                                          */
+/* Auteurs : Nicolas Vérinaud, Matthieu FENGER                     */
+/*******************************************************************/
+
+
 #ifndef POSITION_H
 #define POSITION_H
 

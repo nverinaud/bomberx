@@ -10,6 +10,7 @@ enum TypeDeCase {
     BOMBER2
 };
 
+
 enum Movement{
     TOP,
     RIGHT,
