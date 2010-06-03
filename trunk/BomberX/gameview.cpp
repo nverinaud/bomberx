@@ -8,8 +8,13 @@
  */
 GameView::GameView(GameController& gc)
 {
-    scene = new QGraphicsScene();
     gameController = &gc;
+
+    bomber1isAlive = true;
+    bomber4isAlive = true;
+
+    explosionRemoving = new QTimer(this);
+    connect(explosionRemoving, SIGNAL(timeout()), this, SLOT(removeExplosionAtOffset()));
 
     this->generateGameAreaView();
 }
@@ -19,6 +24,8 @@ GameView::GameView(GameController& gc)
  */
 void GameView::generateGameAreaView()
 {
+    scene = new QGraphicsScene();
+    
     // Génération de l'affichage de la map
     QPixmap caseIndestructible(_IMG_CASE_INDESTRUCTIBLE_);
     QPixmap caseDestructible(_IMG_CASE_DESTRUCTIBLE_);
@@ -70,11 +77,9 @@ void GameView::generateGameAreaView()
 void GameView::displayGameView()
 {
     // Génération de l'affichage général
-    playButton = new QPushButton("Play !");
     quitButton = new QPushButton("Quitter");
 
     QVBoxLayout *vlayout = new QVBoxLayout();
-    vlayout->addWidget(playButton);
     vlayout->addWidget(quitButton);
 
     view = new QGraphicsView(scene, this);
@@ -94,11 +99,6 @@ void GameView::displayGameView()
     connect(quitButton, SIGNAL(clicked()), qApp, SLOT(quit()));
 }
 
-void GameView::actionPlay()
-{
-
-}
-
 /*
  * Gestion des entrées clavier
  */
@@ -111,27 +111,27 @@ void GameView::keyPressEvent(QKeyEvent* e)
         /*GESTION DU PLAYER 1*/
 
     case Qt::Key_Z:
-            if (gameController->bomberWantMoveToPosition(1, TOP))
+            if (gameController->bomberWantMoveToPosition(1, TOP) && bomber1isAlive)
                bomber1->setOffset(bomber1->offset().x(), bomber1->offset().y()-SPEED);
         break;
 
     case Qt::Key_S:
-            if (gameController->bomberWantMoveToPosition(1, BOTTOM))
+            if (gameController->bomberWantMoveToPosition(1, BOTTOM) && bomber1isAlive)
                 bomber1->setOffset(bomber1->offset().x(), bomber1->offset().y()+SPEED);
         break;
 
     case Qt::Key_D:
-            if (gameController->bomberWantMoveToPosition(1, RIGHT))
+            if (gameController->bomberWantMoveToPosition(1, RIGHT) && bomber1isAlive)
                 bomber1->setOffset(bomber1->offset().x()+SPEED, bomber1->offset().y());
         break;
 
     case Qt::Key_Q:
-            if (gameController->bomberWantMoveToPosition(1, LEFT))
+            if (gameController->bomberWantMoveToPosition(1, LEFT) && bomber1isAlive)
                 bomber1->setOffset(bomber1->offset().x()-SPEED, bomber1->offset().y());
         break;
 
     case Qt::Key_A:
-            if(gameController->canPlantBombe(1, bomber1->offset().x(), bomber1->offset().y()-10)) {
+            if(gameController->canPlantBombe(1, bomber1->offset().x(), bomber1->offset().y()-10) && bomber1isAlive) {
                 QPixmap imgBombe(_IMG_BOMBE_);
                 QGraphicsPixmapItem *bombe = new QGraphicsPixmapItem(imgBombe, NULL, scene);
                 bombe->setOffset(bomber1->offset().x(), bomber1->offset().y()-10);
@@ -141,27 +141,27 @@ void GameView::keyPressEvent(QKeyEvent* e)
    /*GESTION DU PLAYER 4*/
 
     case Qt::Key_Up:
-            if (gameController->bomberWantMoveToPosition(4, TOP))
+            if (gameController->bomberWantMoveToPosition(4, TOP) && bomber4isAlive)
                  bomber4->setOffset(bomber4->offset().x(), bomber4->offset().y()-SPEED);
         break;
 
     case Qt::Key_Down:
-            if (gameController->bomberWantMoveToPosition(4, BOTTOM))
+            if (gameController->bomberWantMoveToPosition(4, BOTTOM) && bomber4isAlive)
                  bomber4->setOffset(bomber4->offset().x(), bomber4->offset().y()+SPEED);
         break;
 
     case Qt::Key_Right:
-            if (gameController->bomberWantMoveToPosition(4, RIGHT))
+            if (gameController->bomberWantMoveToPosition(4, RIGHT) && bomber4isAlive)
            bomber4->setOffset(bomber4->offset().x()+SPEED, bomber4->offset().y());
         break;
 
     case Qt::Key_Left:
-            if (gameController->bomberWantMoveToPosition(4, LEFT))
+            if (gameController->bomberWantMoveToPosition(4, LEFT) && bomber4isAlive)
               bomber4->setOffset(bomber4->offset().x()-SPEED, bomber4->offset().y());
         break;
 
     case Qt::Key_Shift:
-            if(gameController->canPlantBombe(4, bomber4->offset().x(), bomber4->offset().y()-10)) {
+            if(gameController->canPlantBombe(4, bomber4->offset().x(), bomber4->offset().y()-10) && bomber4isAlive) {
                 QPixmap imgBombe(_IMG_BOMBE_);
                 QGraphicsPixmapItem *bombe = new QGraphicsPixmapItem(imgBombe, NULL, scene);
                 bombe->setOffset(bomber4->offset().x(), bomber4->offset().y()-10);
@@ -185,4 +185,57 @@ void GameView::removeCaseAtOffset(int _y, int _x, TypeDeCase caseType)
 
     if(caseType != VIDE)
         scene->removeItem(scene->itemAt(_x*SPEED+20, _y*SPEED+20));
+
+    this->displayExplosionAtOffset(_y*SPEED, _x*SPEED);
 }
+
+void GameView::displayExplosionAtOffset(int _y, int _x)
+{
+    QPixmap explosion(_IMG_EXPLOSION_);
+    scene->addPixmap(explosion)->setOffset(_x, _y);
+    currentExplosionX = _x;
+    currentExplosionY = _y;
+
+//    this->explosionRemoving->start();
+    this->removeExplosionAtOffset();
+}
+
+// Slot
+void GameView::removeExplosionAtOffset()
+{
+    scene->removeItem(scene->itemAt(currentExplosionX, currentExplosionY));
+//    this->explosionRemoving->stop();
+}
+
+void GameView::killBomberman(int bomberId){
+    switch(bomberId){
+    case 1:
+        this->bomber1isAlive = false;
+        this->scene->removeItem(scene->itemAt(bomber1->offset().x(), bomber1->offset().y()));
+        break;
+    case 2:
+        break;
+    case 3:
+        break;
+    case 4:
+        this->bomber4isAlive = false;
+        this->scene->removeItem(scene->itemAt(bomber4->offset().x(), bomber4->offset().y()));
+        break;
+    default:
+        break;
+    }
+
+    this->endOfTheGame();
+}
+
+void GameView::endOfTheGame()
+{
+    if(bomber1isAlive)
+        QMessageBox::information(this, "Fin de la partie", "Le gagnant est le joueur 1");
+
+    if(bomber4isAlive)
+        QMessageBox::information(this, "Fin de la partie", "Le gagnant est le joueur 2");
+
+    qApp->quit();
+}
+

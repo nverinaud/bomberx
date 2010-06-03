@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'gameview.h'
 **
-** Created: Tue Jun 1 17:10:30 2010
+** Created: Thu Jun 3 15:35:32 2010
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.6.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -37,7 +37,7 @@ static const uint qt_meta_data_GameView[] = {
 };
 
 static const char qt_meta_stringdata_GameView[] = {
-    "GameView\0\0actionPlay()\0"
+    "GameView\0\0removeExplosionAtOffset()\0"
 };
 
 const QMetaObject GameView::staticMetaObject = {
@@ -69,7 +69,7 @@ int GameView::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
-        case 0: actionPlay(); break;
+        case 0: removeExplosionAtOffset(); break;
         default: ;
         }
         _id -= 1;
