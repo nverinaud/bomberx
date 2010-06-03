@@ -54,14 +54,14 @@ void GameView::generateGameAreaView()
     QPixmap bomber(_IMG_BOMBER_);
 
     bomber1 = new QGraphicsPixmapItem(bomber, NULL, scene);
-    bomber1->setOffset(60, SPEED);
+    bomber1->setOffset(SPEED+5, SPEED);
 
     //bomber2 = new QGraphicsPixmapItem(bomber, NULL, scene);
 
     //bomber3 = new QGraphicsPixmapItem(bomber, NULL, scene);
 
     bomber4 = new QGraphicsPixmapItem(bomber, NULL, scene);
-    bomber4->setOffset(scene->width()-45*2, scene->height()-SPEED*2);
+    bomber4->setOffset(scene->width()-SPEED*2+5, scene->height()-SPEED*2);
 
     // Appel à la méthode d'affichage générale
     this->displayGameView();

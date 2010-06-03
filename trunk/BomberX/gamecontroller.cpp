@@ -49,9 +49,14 @@ void GameController::generateGameArea()
 
     // Génération des bombermans
     player1 = new Bomberman(1, 1);
+    this->gameArea[1].replace(1, new Case(BOMBER1));
+
     player2 = new Bomberman(1, 13);
+
     player3 = new Bomberman(13, 1);
+
     player4 = new Bomberman(13, 13);
+    this->gameArea[13].replace(13, new Case(BOMBER2));
 }
 
 bool GameController::bomberWantMoveToPosition(int _bomber, Movement mov)

@@ -25,6 +25,7 @@ public:
     void displayGameView();
     void removeBombeAtOffset(int, int);
     void removeCaseAtOffset(int, int, TypeDeCase);
+    void displayExplosionAtOffset(int, int);
 
     QGraphicsPixmapItem* bomber1, *bomber2, *bomber3, *bomber4;
     GameController* gameController;
