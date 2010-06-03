@@ -2,6 +2,7 @@
 #define BOMBE_H
 
 #include "position.h"
+#include "base.h"
 
 class Bombe : public Position
 {

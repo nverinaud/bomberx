@@ -76,16 +76,16 @@
   <valuemap type="QVariantMap">
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Debug</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList">
-    <value type="QString">Apple_PubSub_Socket_Render=/tmp/launch-gjfmtt/Render</value>
+    <value type="QString">Apple_PubSub_Socket_Render=/tmp/launch-Re8Qfj/Render</value>
     <value type="QString">COMMAND_MODE=legacy</value>
-    <value type="QString">DISPLAY=/tmp/launch-5ywARR/org.x:0</value>
+    <value type="QString">DISPLAY=/tmp/launch-wC2Thz/org.x:0</value>
     <value type="QString">HOME=/Users/nico</value>
     <value type="QString">LOGNAME=nico</value>
     <value type="QString">PATH=/Developer/Tools/Qt:/usr/bin:/bin:/usr/sbin:/sbin</value>
     <value type="QString">QTDIR=/usr/local/Qt4.6</value>
-    <value type="QString">SECURITYSESSIONID=405c02</value>
+    <value type="QString">SECURITYSESSIONID=40e4a2</value>
     <value type="QString">SHELL=/bin/bash</value>
-    <value type="QString">SSH_AUTH_SOCK=/tmp/launch-TboGWh/Listeners</value>
+    <value type="QString">SSH_AUTH_SOCK=/tmp/launch-xvPtxj/Listeners</value>
     <value type="QString">TMPDIR=/var/folders/hB/hBxz7H4EHNimhnVxcgVvok+++TI/-Tmp-/</value>
     <value type="QString">USER=nico</value>
     <value type="QString">__CF_USER_TEXT_ENCODING=0x1F5:0:1</value>
@@ -106,16 +106,16 @@
   <valuemap type="QVariantMap">
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Debug</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList">
-    <value type="QString">Apple_PubSub_Socket_Render=/tmp/launch-gjfmtt/Render</value>
+    <value type="QString">Apple_PubSub_Socket_Render=/tmp/launch-Re8Qfj/Render</value>
     <value type="QString">COMMAND_MODE=legacy</value>
-    <value type="QString">DISPLAY=/tmp/launch-5ywARR/org.x:0</value>
+    <value type="QString">DISPLAY=/tmp/launch-wC2Thz/org.x:0</value>
     <value type="QString">HOME=/Users/nico</value>
     <value type="QString">LOGNAME=nico</value>
     <value type="QString">PATH=/Developer/Tools/Qt:/usr/bin:/bin:/usr/sbin:/sbin</value>
     <value type="QString">QTDIR=/usr/local/Qt4.6</value>
-    <value type="QString">SECURITYSESSIONID=405c02</value>
+    <value type="QString">SECURITYSESSIONID=40e4a2</value>
     <value type="QString">SHELL=/bin/bash</value>
-    <value type="QString">SSH_AUTH_SOCK=/tmp/launch-TboGWh/Listeners</value>
+    <value type="QString">SSH_AUTH_SOCK=/tmp/launch-xvPtxj/Listeners</value>
     <value type="QString">TMPDIR=/var/folders/hB/hBxz7H4EHNimhnVxcgVvok+++TI/-Tmp-/</value>
     <value type="QString">USER=nico</value>
     <value type="QString">__CF_USER_TEXT_ENCODING=0x1F5:0:1</value>

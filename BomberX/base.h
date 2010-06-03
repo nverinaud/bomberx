@@ -2,11 +2,12 @@
 #define BASE_H
 
 enum TypeDeCase {
+    VIDE,
     DESTRUCTIBLE,
     INDESTRUCTIBLE,
-    VIDE,
     DECOR,
-    BOMBER
+    BOMBER1,
+    BOMBER2
 };
 
 enum Movement{

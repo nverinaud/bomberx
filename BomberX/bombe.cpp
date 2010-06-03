@@ -6,8 +6,8 @@ Bombe::Bombe(int _bomberId, int _offsetX, int _offsetY)
     shouldExploseIn = 30;
     offsetX = _offsetX;
     offsetY = _offsetY;
-    setX(_offsetX/50);
-    setY((_offsetY+20)/50);
+    setX(_offsetX/SPEED);
+    setY((_offsetY+20)/SPEED);
 }
 
 void Bombe::decrementeShouldExploseIn()
