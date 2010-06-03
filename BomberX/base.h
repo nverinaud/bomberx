@@ -24,12 +24,13 @@ public:
 
 };
 
-#define _IMG_CASE_DESTRUCTIBLE_ "/img/case_destructible.png"
-#define _IMG_CASE_INDESTRUCTIBLE_ "/img/case_indestructible.png"
-#define _IMG_BOMBER_ "/img/face3.png"
-#define _IMG_BOMBE_ "/img/bombe2.png"
-#define _TERRAIN_ "/img/terrain.png"
-#define _IMG_VIDE_ "/img/vide.png"
-#define SPEED 30
+#define _IMG_CASE_DESTRUCTIBLE_ "img/case_destructible.png"
+#define _IMG_CASE_INDESTRUCTIBLE_ "img/case_indestructible.png"
+#define _IMG_BOMBER_ "img/bomber.png"
+#define _IMG_BOMBE_ "img/bombe.png"
+#define _TERRAIN_ "img/terrain.png"
+#define _IMG_VIDE_ "img/vide.png"
+#define _IMG_EXPLOSION_ "img/explosion.png"
+#define SPEED 50
 
 #endif // BASE_H

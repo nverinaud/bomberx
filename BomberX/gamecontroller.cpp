@@ -27,8 +27,8 @@ void GameController::generateGameArea()
                 // Les bords de la map
                 this->gameArea[ligne].append(new Case(DECOR));
             } else {
-                if (    (ligne == 2 || ligne == 4 || ligne == 6 || ligne == 8 || ligne == 10 || ligne == 12) && (colonne == 2 || colonne == 4 || colonne == 6 || colonne == 8 || colonne == 10 || colonne == 12))
-                {
+                if ( ligne%2 == 0 && colonne%2 == 0 ) {
+
                     // Les cases indestructibles à l'intérieur de la map
                     this->gameArea[ligne].append(new Case(INDESTRUCTIBLE) );
                 } else {
@@ -218,15 +218,25 @@ void GameController::bombeExplosed(Bombe* bombe)
 
     for(int i = 1 ; i <= power ; i++){
         // Explosion vers le haut (y-i)
-        if(y-i > 0 && y-i < 13 && !stopTop){
+        if(y-i > 0 && y-i <= 13 && !stopTop){
             if(Debug::isOn())
                 std::cout << "Explosion haut Y: " << y-i << " X: " << x << std::endl;
 
-            if(this->gameArea.at(y-i).at(x)->getTypeDeCase() == VIDE || this->gameArea.at(y-i).at(x)->getTypeDeCase() == DESTRUCTIBLE){
+            if(this->gameArea.at(y-i).at(x)->getTypeDeCase() != INDESTRUCTIBLE && this->gameArea.at(y-i).at(x)->getTypeDeCase() != DECOR){
                 this->gameView->removeCaseAtOffset(y-i, x, this->gameArea.at(y-i).at(x)->getTypeDeCase());
 
                 if(this->gameArea.at(y-i).at(x)->getTypeDeCase() != VIDE)
                     stopTop = true;
+
+                if(this->gameArea.at(y-i).at(x)->getTypeDeCase() == BOMBER1){
+                    this->gameView->killBomberman(1);
+                    this->player1->~Bomberman();
+                }
+
+                if(this->gameArea.at(y-i).at(x)->getTypeDeCase() == BOMBER2){
+                    this->gameView->killBomberman(4);
+                    this->player4->~Bomberman();
+                }
 
                 this->gameArea[y-i].replace(x, new Case(VIDE));
             } else {
@@ -235,15 +245,25 @@ void GameController::bombeExplosed(Bombe* bombe)
         }
 
         // Explosion vers le bas (y+i)
-        if(y+i > 0 && y+i < 13 && !stopBot){
+        if(y+i > 0 && y+i <= 13 && !stopBot){
             if(Debug::isOn())
                 std::cout << "Explosion bas Y: " << y+i << " X: " << x << std::endl;
 
-            if(this->gameArea.at(y+i).at(x)->getTypeDeCase() == VIDE || this->gameArea.at(y+i).at(x)->getTypeDeCase() == DESTRUCTIBLE){
+            if(this->gameArea.at(y+i).at(x)->getTypeDeCase() != INDESTRUCTIBLE && this->gameArea.at(y+i).at(x)->getTypeDeCase() != DECOR){
                 this->gameView->removeCaseAtOffset(y+i, x, this->gameArea.at(y+i).at(x)->getTypeDeCase());
 
                 if(this->gameArea.at(y+i).at(x)->getTypeDeCase() != VIDE)
                     stopBot = true;
+
+                if(this->gameArea.at(y+i).at(x)->getTypeDeCase() == BOMBER1){
+                    this->gameView->killBomberman(1);
+                    this->player1->~Bomberman();
+                }
+
+                if(this->gameArea.at(y+i).at(x)->getTypeDeCase() == BOMBER2){
+                    this->gameView->killBomberman(4);
+                    this->player4->~Bomberman();
+                }
 
                 this->gameArea[y+i].replace(x, new Case(VIDE));
             } else {
@@ -252,15 +272,25 @@ void GameController::bombeExplosed(Bombe* bombe)
         }
 
         // Explosion vers la gauche (x-i)
-        if(x-i > 0 && x-i < 13 && !stopLeft){
+        if(x-i > 0 && x-i <= 13 && !stopLeft){
             if(Debug::isOn())
                 std::cout << "Explosion gauche Y: " << y << " X: " << x-i << std::endl;
 
-            if(this->gameArea.at(y).at(x-i)->getTypeDeCase() == VIDE || this->gameArea.at(y).at(x-i)->getTypeDeCase() == DESTRUCTIBLE){
+            if(this->gameArea.at(y).at(x-i)->getTypeDeCase() != INDESTRUCTIBLE && this->gameArea.at(y).at(x-i)->getTypeDeCase() != DECOR){
                 this->gameView->removeCaseAtOffset(y, x-i, this->gameArea.at(y).at(x-i)->getTypeDeCase());
 
                 if(this->gameArea.at(y).at(x-i)->getTypeDeCase() != VIDE)
                     stopLeft = true;
+
+                if(this->gameArea.at(y).at(x-i)->getTypeDeCase() == BOMBER1){
+                    this->gameView->killBomberman(1);
+                    this->player1->~Bomberman();
+                }
+
+                if(this->gameArea.at(y).at(x-i)->getTypeDeCase() == BOMBER2){
+                    this->gameView->killBomberman(4);
+                    this->player4->~Bomberman();
+                }
 
                 this->gameArea[y].replace(x-i, new Case(VIDE));
             } else {
@@ -269,11 +299,11 @@ void GameController::bombeExplosed(Bombe* bombe)
         }
 
         // Explosion vers la droite (x+i)
-        if(x+i > 0 && x+i < 13 && !stopRight){
+        if(x+i > 0 && x+i <= 13 && !stopRight){
             if(Debug::isOn())
                 std::cout << "Explosion droite Y: " << y << " X: " << x+i << std::endl;
 
-            if(this->gameArea.at(y).at(x+i)->getTypeDeCase() == VIDE || this->gameArea.at(y).at(x+i)->getTypeDeCase() == DESTRUCTIBLE){
+            if(this->gameArea.at(y).at(x+i)->getTypeDeCase() != INDESTRUCTIBLE && this->gameArea.at(y).at(x+i)->getTypeDeCase() != DECOR){
                 this->gameView->removeCaseAtOffset(y, x+i, this->gameArea.at(y).at(x+i)->getTypeDeCase());
 
                 if(Debug::isOn())
@@ -281,6 +311,16 @@ void GameController::bombeExplosed(Bombe* bombe)
 
                 if(this->gameArea.at(y).at(x+i)->getTypeDeCase() != VIDE)
                     stopRight = true;
+
+                if(this->gameArea.at(y).at(x+i)->getTypeDeCase() == BOMBER1){
+                    this->gameView->killBomberman(1);
+                    this->player1->~Bomberman();
+                }
+
+                if(this->gameArea.at(y).at(x+i)->getTypeDeCase() == BOMBER2){
+                    this->gameView->killBomberman(4);
+                    this->player4->~Bomberman();
+                }
 
                 this->gameArea[y].replace(x+i, new Case(VIDE));
             } else {
