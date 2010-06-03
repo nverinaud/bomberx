@@ -1,9 +1,5 @@
 #include "case.h"
 
-Case::Case()
-{
-}
-
 Case::Case(TypeDeCase _typeDeCase)
 {
     this->setTypeDeCase(_typeDeCase);

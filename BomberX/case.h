@@ -7,7 +7,6 @@
 class Case : public Position
 {
 public:
-    Case();
     Case(TypeDeCase _typeDeCase);
 
     TypeDeCase getTypeDeCase();
