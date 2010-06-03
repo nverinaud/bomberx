@@ -3,22 +3,12 @@
 /*
  * Constructors & Destructor
  */
-Bomberman::Bomberman()
-{
-
-}
-
 Bomberman::Bomberman(int _x, int _y)
 {
     setX(_x);
     setY(_y);
     setCompteurBombe(1);
     bomberPower = 2;
-}
-
-Bomberman::~Bomberman()
-{
-
 }
 
 /*
