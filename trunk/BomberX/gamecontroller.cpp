@@ -27,9 +27,8 @@ void GameController::generateGameArea()
                 // Les bords de la map
                 this->gameArea[ligne].append(new Case(DECOR));
             } else {
-                if (    (ligne == 3 || ligne == 7 || ligne == 11) && (colonne == 3 || colonne == 7 || colonne == 11)
-                    ||  (ligne == 5 || ligne == 9 ) && ( colonne == 5 || colonne == 9)
-                    ) {
+                if (    (ligne == 2 || ligne == 4 || ligne == 6 || ligne == 8 || ligne == 10 || ligne == 12) && (colonne == 2 || colonne == 4 || colonne == 6 || colonne == 8 || colonne == 10 || colonne == 12))
+                {
                     // Les cases indestructibles à l'intérieur de la map
                     this->gameArea[ligne].append(new Case(INDESTRUCTIBLE) );
                 } else {
