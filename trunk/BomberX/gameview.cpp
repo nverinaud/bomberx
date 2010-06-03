@@ -54,14 +54,14 @@ void GameView::generateGameAreaView()
     QPixmap bomber(_IMG_BOMBER_);
 
     bomber1 = new QGraphicsPixmapItem(bomber, NULL, scene);
-    bomber1->setOffset(60, 50);
+    bomber1->setOffset(60, SPEED);
 
     //bomber2 = new QGraphicsPixmapItem(bomber, NULL, scene);
 
     //bomber3 = new QGraphicsPixmapItem(bomber, NULL, scene);
 
     bomber4 = new QGraphicsPixmapItem(bomber, NULL, scene);
-    bomber4->setOffset(scene->width()-45*2, scene->height()-50*2);
+    bomber4->setOffset(scene->width()-45*2, scene->height()-SPEED*2);
 
     // Appel à la méthode d'affichage générale
     this->displayGameView();
@@ -178,9 +178,11 @@ void GameView::removeBombeAtOffset(int _x, int _y)
     scene->removeItem(scene->itemAt(_x+20, _y+20));
 }
 
-void GameView::removeCaseAtOffset(int _x, int _y, TypeDeCase caseType)
+void GameView::removeCaseAtOffset(int _y, int _x, TypeDeCase caseType)
 {
-    std::cout << "X=" << _x*50+10 << " Y=" << _y*50+10 << std::endl;
+    if(Debug::isOn())
+        std::cout << "Case at Offset Y=" << _y*SPEED+10 << " X=" << _x*SPEED+10 << std::endl;
+
     if(caseType != VIDE)
-        scene->removeItem(scene->itemAt(_x*50+20, _y*50+20));
+        scene->removeItem(scene->itemAt(_x*SPEED+20, _y*SPEED+20));
 }

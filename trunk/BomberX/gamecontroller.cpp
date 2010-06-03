@@ -57,11 +57,13 @@ void GameController::generateGameArea()
 bool GameController::bomberWantMoveToPosition(int _bomber, Movement mov)
 {
     Bomberman* bomber;
+    TypeDeCase bomberType;
     bool bomberCanMove = false;
 
     switch (_bomber){
     case 1:
         bomber = player1;
+        bomberType = BOMBER1;
         break;
     case 2:
         bomber = player2;
@@ -71,6 +73,7 @@ bool GameController::bomberWantMoveToPosition(int _bomber, Movement mov)
         break;
     case 4:
         bomber = player4;
+        bomberType = BOMBER2;
         break;
     default:
         break;
@@ -118,7 +121,7 @@ bool GameController::bomberWantMoveToPosition(int _bomber, Movement mov)
         std::cout << "Bomberman - Position Y: " << bomber->getY() << " Position X: " << bomber->getX() << std::endl;
 
     // Mise à jour du tableau de case (un bomberman peut-être représenté par une case desctructible
-    this->gameArea[bomber->getY()].replace(bomber->getX(), new Case(BOMBER));
+    this->gameArea[bomber->getY()].replace(bomber->getX(), new Case(bomberType));
 
     return bomberCanMove;
 }
@@ -206,38 +209,78 @@ void GameController::bombeExplosed(Bombe* bombe)
     bool stopRight = false;
     bool stopBot = false;
 
-    std::cout << "Bombe X: " << x << " Y: " << y << std::endl;
+    if(Debug::isOn())
+        std::cout << "Bombe X: " << x << " Y: " << y << std::endl;
 
-    for(int i = -power ; i <= power ; i++){ // i = ligne
-        if(y+i < 1 || y+i > 13 || (i <= 0 && stopTop) || (i > 0 && stopBot))
-            continue;
+    for(int i = 1 ; i <= power ; i++){
+        // Explosion vers le haut (y-i)
+        if(y-i > 0 && y-i < 13 && !stopTop){
+            if(Debug::isOn())
+                std::cout << "Explosion haut Y: " << y-i << " X: " << x << std::endl;
 
-        if(i+y == y){ // Si i == ligne initiale de l'explosion
-            for(int j = -power ; j <= power ; j++){ // j = colonne
-                if(x+j < 1 || x+j > 13 || (j <= 0 && stopLeft) || (j > 0 && stopRight))
-                    continue;
+            if(this->gameArea.at(y-i).at(x)->getTypeDeCase() == VIDE || this->gameArea.at(y-i).at(x)->getTypeDeCase() == DESTRUCTIBLE){
+                this->gameView->removeCaseAtOffset(y-i, x, this->gameArea.at(y-i).at(x)->getTypeDeCase());
 
-                if( this->gameArea.at(y).at(x+j)->getTypeDeCase() == VIDE || this->gameArea.at(y).at(x+j)->getTypeDeCase() == DESTRUCTIBLE ){
-                    this->gameView->removeCaseAtOffset(x+j, y, this->gameArea.at(y).at(x+j)->getTypeDeCase());
-                    this->gameArea[y].replace(x+j, new Case(VIDE));
+                if(this->gameArea.at(y-i).at(x)->getTypeDeCase() != VIDE)
+                    stopTop = true;
 
-                    if(this->gameArea.at(y).at(x+j)->getTypeDeCase() == DESTRUCTIBLE){
-                        if(j <= 0)
-                            stopLeft = true;
-                        else
-                            stopRight = true;
-                    }
-                } else if(this->gameArea.at(y).at(x+j)->getTypeDeCase() == INDESTRUCTIBLE){
-                    if(j <= 0)
-                        stopLeft = true;
-                    else
-                        stopRight = true;
-                }
+                this->gameArea[y-i].replace(x, new Case(VIDE));
+            } else {
+                stopTop = true;
             }
-        } else {
-            if( this->gameArea.at(y+i).at(x)->getTypeDeCase() == VIDE || this->gameArea.at(y+i).at(x)->getTypeDeCase() == DESTRUCTIBLE ){
-                this->gameView->removeCaseAtOffset(x, y+i, this->gameArea.at(y+i).at(x)->getTypeDeCase());
+        }
+
+        // Explosion vers le bas (y+i)
+        if(y+i > 0 && y+i < 13 && !stopBot){
+            if(Debug::isOn())
+                std::cout << "Explosion bas Y: " << y+i << " X: " << x << std::endl;
+
+            if(this->gameArea.at(y+i).at(x)->getTypeDeCase() == VIDE || this->gameArea.at(y+i).at(x)->getTypeDeCase() == DESTRUCTIBLE){
+                this->gameView->removeCaseAtOffset(y+i, x, this->gameArea.at(y+i).at(x)->getTypeDeCase());
+
+                if(this->gameArea.at(y+i).at(x)->getTypeDeCase() != VIDE)
+                    stopBot = true;
+
                 this->gameArea[y+i].replace(x, new Case(VIDE));
+            } else {
+                stopBot = true;
+            }
+        }
+
+        // Explosion vers la gauche (x-i)
+        if(x-i > 0 && x-i < 13 && !stopLeft){
+            if(Debug::isOn())
+                std::cout << "Explosion gauche Y: " << y << " X: " << x-i << std::endl;
+
+            if(this->gameArea.at(y).at(x-i)->getTypeDeCase() == VIDE || this->gameArea.at(y).at(x-i)->getTypeDeCase() == DESTRUCTIBLE){
+                this->gameView->removeCaseAtOffset(y, x-i, this->gameArea.at(y).at(x-i)->getTypeDeCase());
+
+                if(this->gameArea.at(y).at(x-i)->getTypeDeCase() != VIDE)
+                    stopLeft = true;
+
+                this->gameArea[y].replace(x-i, new Case(VIDE));
+            } else {
+                stopLeft = true;
+            }
+        }
+
+        // Explosion vers la droite (x+i)
+        if(x+i > 0 && x+i < 13 && !stopRight){
+            if(Debug::isOn())
+                std::cout << "Explosion droite Y: " << y << " X: " << x+i << std::endl;
+
+            if(this->gameArea.at(y).at(x+i)->getTypeDeCase() == VIDE || this->gameArea.at(y).at(x+i)->getTypeDeCase() == DESTRUCTIBLE){
+                this->gameView->removeCaseAtOffset(y, x+i, this->gameArea.at(y).at(x+i)->getTypeDeCase());
+
+                if(Debug::isOn())
+                    std::cout << "Type de case: " << this->gameArea.at(y).at(x+i)->getTypeDeCase() << " i = " << i << std::endl;
+
+                if(this->gameArea.at(y).at(x+i)->getTypeDeCase() != VIDE)
+                    stopRight = true;
+
+                this->gameArea[y].replace(x+i, new Case(VIDE));
+            } else {
+                stopRight = true;
             }
         }
     }
