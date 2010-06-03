@@ -8,7 +8,6 @@ class Bomberman : public Position
 Q_OBJECT
 public:
     // Constructors & Destructor
-    Bomberman();
     Bomberman(int, int);
 
     // Compteur de bombe
